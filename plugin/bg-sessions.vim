@@ -1,5 +1,5 @@
 fun! SaveSession(sessionName)
-	if argc() == 0
+	if argc() == 1
 		execute "mksession! ~/.vim-sessions/" . a:sessionName . ".vim"
 	endif
 	execute "mksession! ~/.vim-sessions/last.vim"
