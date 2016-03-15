@@ -37,7 +37,21 @@ fun! SessionComplete(ArgLead, CmdLine, CursorPos)
 	return GetSessionNames()
 endfunction
 
+fun! DeleteSession(sessionName)
+	let file_path = fnamemodify(GetSessionPath(a:sessionName), ":p")
+	let rm_cmd = has("win32") || has("win16") ? "!del " : "!rm "
+
+	if has("win32") || has("win16")
+		let file_path = fnamemodify(file_path, ":gs?/?\\?")
+	endif
+
+	if strlen(a:sessionName)
+		execute rm_cmd . file_path
+	endif
+endfunction
+
 autocmd VimLeave * call SaveSession()
 command! -nargs=? SaveSession call SaveSession(<q-args>)
 command! -nargs=? -complete=customlist,SessionComplete LoadSession call LoadSession(<q-args>)
+command! -nargs=1 -complete=customlist,SessionComplete DeleteSession call DeleteSession(<q-args>)
 command! Sessions call Sessions()
