@@ -50,8 +50,8 @@ fun! DeleteSession(sessionName)
 	endif
 endfunction
 
-autocmd VimLeave * call SaveSession()
 command! -nargs=? SaveSession call SaveSession(<q-args>)
 command! -nargs=? -complete=customlist,SessionComplete LoadSession call LoadSession(<q-args>)
 command! -nargs=1 -complete=customlist,SessionComplete DeleteSession call DeleteSession(<q-args>)
 command! Sessions call Sessions()
+autocmd VimLeave * call SaveSession("last")
