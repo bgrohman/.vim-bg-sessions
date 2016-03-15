@@ -1,20 +1,28 @@
+if !exists("g:bg_sessions_dir")
+	let g:bg_sessions_dir = "~/.vim-sessions"
+endif
+
+fun! GetSessionPath(sessionName)
+	return g:bg_sessions_dir . "/" . a:sessionName . ".vim"
+endfunction
+
 fun! SaveSession(sessionName)
-	if argc() == 1
-		execute "mksession! ~/.vim-sessions/" . a:sessionName . ".vim"
+	if strlen(a:sessionName)
+		execute "mksession! " . GetSessionPath(a:sessionName) 
 	endif
-	execute "mksession! ~/.vim-sessions/last.vim"
+	execute "mksession! " . GetSessionPath("last")
 endfunction
 
 fun! LoadSession(sessionName)
-	if argc() == 0
-		execute "source ~/.vim-sessions/last.vim"
+	if strlen(a:sessionName)
+		execute "source " . GetSessionPath(a:sessionName)
 	else
-		execute "source ~/.vim-sessions/" . a:sessionName
+		execute "source " . GetSessionPath("last")
 	endif
 endfunction
 
 fun! GetSessionFiles()
-	return split(globpath('~/.vim-sessions/', '*'), '\n')
+	return split(globpath(g:bg_sessions_dir, '*'), '\n')
 endfunction
 
 fun! GetSessionNames()
