@@ -13,11 +13,31 @@ When saving a named session, the "last" session is also updated.
 
 Use `tab` for session name autocompletion.
 
+__Example:__ _Save a session named "myFirstSession"_
+```
+:SaveSession myFirstSession
+```
+
 ### LoadSession [session_name]
 Loads a session. If `session_name` is provided, the session by that name will be loaded. Otherwise, the session named "last" will be loaded. Use `tab` for session name autocompletion.
 
+__Example:__ _Load a session named "myFirstSession"_
+```
+:LoadSession myFirstSession
+```
+
+__Example:__ _Load your last session from the last time you closed Vim_
+```
+:LoadSession
+```
+
 ### DeleteSession session_name
 Deletes the session named `session_name`. Use `tab` for session name autocompletion.
+
+__Example:__ _Delete a session named "myFirstSession"_
+```
+:DeleteSession myFirstSession
+```
 
 ## Options
 
