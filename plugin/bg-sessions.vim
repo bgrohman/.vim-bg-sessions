@@ -34,7 +34,8 @@ fun! Sessions()
 endfunction
 
 fun! SessionComplete(ArgLead, CmdLine, CursorPos)
-    return GetSessionNames()
+    let match_filter = 'v:val =~ ".*' . a:ArgLead . '.*"'
+    return filter(GetSessionNames(), match_filter)
 endfunction
 
 fun! DeleteSession(sessionName)
