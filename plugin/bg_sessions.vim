@@ -2,44 +2,44 @@ if !exists("g:bg_sessions_dir")
     let g:bg_sessions_dir = "~/.vim-sessions"
 endif
 
-fun! bg_sessions#GetSessionPath(sessionName)
+fun! s:GetSessionPath(sessionName)
     return g:bg_sessions_dir . "/" . a:sessionName . ".vim"
 endfunction
 
 fun! bg_sessions#SaveSession(sessionName)
     if strlen(a:sessionName)
-        execute "mksession! " . bg_sessions#GetSessionPath(a:sessionName) 
+        execute "mksession! " . s:GetSessionPath(a:sessionName) 
     endif
-    execute "mksession! " . bg_sessions#GetSessionPath("last")
+    execute "mksession! " . s:GetSessionPath("last")
 endfunction
 
 fun! bg_sessions#LoadSession(sessionName)
     if strlen(a:sessionName)
-        execute "source " . bg_sessions#GetSessionPath(a:sessionName)
+        execute "source " . s:GetSessionPath(a:sessionName)
     else
-        execute "source " . bg_sessions#GetSessionPath("last")
+        execute "source " . s:GetSessionPath("last")
     endif
 endfunction
 
-fun! bg_sessions#GetSessionFiles()
+fun! s:GetSessionFiles()
     return split(globpath(g:bg_sessions_dir, '*'), '\n')
 endfunction
 
-fun! bg_sessions#GetSessionNames()
-    return map(bg_sessions#GetSessionFiles(), "fnamemodify(v:val, ':t:r')")
+fun! s:GetSessionNames()
+    return map(s:GetSessionFiles(), "fnamemodify(v:val, ':t:r')")
 endfunction
 
 fun! bg_sessions#Sessions()
-    echo join(bg_sessions#GetSessionNames(), "\n")
+    echo join(s:GetSessionNames(), "\n")
 endfunction
 
-fun! bg_sessions#SessionComplete(ArgLead, CmdLine, CursorPos)
+fun! s:SessionComplete(ArgLead, CmdLine, CursorPos)
     let match_filter = 'v:val =~ ".*' . a:ArgLead . '.*"'
-    return filter(bg_sessions#GetSessionNames(), match_filter)
+    return filter(s:GetSessionNames(), match_filter)
 endfunction
 
 fun! bg_sessions#DeleteSession(sessionName)
-    let file_path = fnamemodify(bg_sessions#GetSessionPath(a:sessionName), ":p")
+    let file_path = fnamemodify(s:GetSessionPath(a:sessionName), ":p")
     let rm_cmd = has("win32") || has("win16") ? "!del " : "!rm "
 
     if has("win32") || has("win16")
@@ -51,8 +51,8 @@ fun! bg_sessions#DeleteSession(sessionName)
     endif
 endfunction
 
-command! -nargs=? -complete=customlist,bg_sessions#SessionComplete SaveSession call bg_sessions#SaveSession(<q-args>)
-command! -nargs=? -complete=customlist,bg_sessions#SessionComplete LoadSession call bg_sessions#LoadSession(<q-args>)
-command! -nargs=1 -complete=customlist,bg_sessions#SessionComplete DeleteSession call bg_sessions#DeleteSession(<q-args>)
+command! -nargs=? -complete=customlist,s:SessionComplete SaveSession call bg_sessions#SaveSession(<q-args>)
+command! -nargs=? -complete=customlist,s:SessionComplete LoadSession call bg_sessions#LoadSession(<q-args>)
+command! -nargs=1 -complete=customlist,s:SessionComplete DeleteSession call bg_sessions#DeleteSession(<q-args>)
 command! Sessions call bg_sessions#Sessions()
 autocmd VimLeave * call bg_sessions#SaveSession("last")
