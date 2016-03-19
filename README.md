@@ -11,11 +11,13 @@ Saves your current sessions. If `session_name` is provided, a session will be sa
 
 When saving a named session, the "last" session is also updated.
 
+Use `tab` for session name autocompletion.
+
 ### LoadSession [session_name]
-Loads a session. If `session_name` is provided, the session by that name will be loaded. Otherwise, the session named "last" will be loaded.
+Loads a session. If `session_name` is provided, the session by that name will be loaded. Otherwise, the session named "last" will be loaded. Use `tab` for session name autocompletion.
 
 ### DeleteSession session_name
-Deletes the session named `session_name`.
+Deletes the session named `session_name`. Use `tab` for session name autocompletion.
 
 ## Options
 
