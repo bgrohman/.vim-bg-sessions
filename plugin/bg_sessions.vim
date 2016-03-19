@@ -35,11 +35,11 @@ endfunction
 
 fun! bg_sessions#SessionComplete(ArgLead, CmdLine, CursorPos)
     let match_filter = 'v:val =~ ".*' . a:ArgLead . '.*"'
-    return filter(GetSessionNames(), match_filter)
+    return filter(bg_sessions#GetSessionNames(), match_filter)
 endfunction
 
 fun! bg_sessions#DeleteSession(sessionName)
-    let file_path = fnamemodify(GetSessionPath(a:sessionName), ":p")
+    let file_path = fnamemodify(bg_sessions#GetSessionPath(a:sessionName), ":p")
     let rm_cmd = has("win32") || has("win16") ? "!del " : "!rm "
 
     if has("win32") || has("win16")
