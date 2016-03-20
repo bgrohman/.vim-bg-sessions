@@ -72,4 +72,7 @@ function! bg_sessions#DeleteSession(sessionName)
     endif
 endfunction
 
-autocmd BufEnter,VimLeave * call bg_sessions#SaveCurrentSession()
+augroup bg_sessions
+    autocmd!
+    autocmd BufEnter * call bg_sessions#SaveCurrentSession()
+augroup END
