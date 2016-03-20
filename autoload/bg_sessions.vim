@@ -30,7 +30,7 @@ function! bg_sessions#SaveSession(sessionName)
 endfunction
 
 function! bg_sessions#SaveCurrentSession()
-    if g:bg_sessions_loading
+    if g:bg_sessions_loading == 1
         let g:bg_sessions_loading = 0 
     elseif exists("g:bg_sessions_current")
         let latest_session_name = g:bg_sessions_current . "_latest"
@@ -45,6 +45,7 @@ function! bg_sessions#LoadSession(sessionName)
         execute "source " . s:GetSessionPath(a:sessionName)
     else
         unlet g:bg_sessions_current
+        let g:bg_sessions_loading = 0
         execute "source " . s:GetSessionPath("last")
     endif
 endfunction
@@ -70,3 +71,5 @@ function! bg_sessions#DeleteSession(sessionName)
         execute rm_cmd . file_path
     endif
 endfunction
+
+autocmd BufEnter,VimLeave * call bg_sessions#SaveCurrentSession()
