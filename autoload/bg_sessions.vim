@@ -29,7 +29,7 @@ function! s:SaveSessionImpl(sessionName)
 endfunction
 
 function! bg_sessions#SaveSession(sessionName)
-    s:SaveSessionImpl(a:sessionName)
+    call s:SaveSessionImpl(a:sessionName)
 endfunction
 
 function! bg_sessions#SaveCurrentSession()
