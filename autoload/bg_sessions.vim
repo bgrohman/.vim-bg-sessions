@@ -44,7 +44,7 @@ endfunction
 function! bg_sessions#LoadSession(sessionName)
     if strlen(a:sessionName)
         execute "source " . s:GetSessionPath(a:sessionName)
-        let g:bg_sessions_current = substitute(a:sessionName, "\.*_latest$", "", "")
+        let g:bg_sessions_current = substitute(a:sessionName, "_latest$", "", "")
     else
         unlet g:bg_sessions_current
         execute "source " . s:GetSessionPath("last")
