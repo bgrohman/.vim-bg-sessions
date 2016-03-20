@@ -2,6 +2,8 @@ if !exists("g:bg_sessions_dir")
     let g:bg_sessions_dir = "~/.vim-sessions"
 endif
 
+let g:bg_sessions_loading = 0
+
 function! s:GetSessionPath(sessionName)
     return g:bg_sessions_dir . "/" . a:sessionName . ".vim"
 endfunction
@@ -28,7 +30,9 @@ function! bg_sessions#SaveSession(sessionName)
 endfunction
 
 function! bg_sessions#SaveCurrentSession()
-    if exists("g:bg_sessions_current")
+    if g:bg_sessions_loading
+        let g:bg_sessions_loading = 0 
+    else if exists("g:bg_sessions_current")
         let latest_session_name = g:bg_sessions_current . "_latest"
         bg_sessions#SaveSession(latest_session_name)
     endif
@@ -37,6 +41,7 @@ endfunction
 function! bg_sessions#LoadSession(sessionName)
     if strlen(a:sessionName)
         let g:bg_sessions_current = a:sessionName
+        let g:bg_sessions_loading = 1
         execute "source " . s:GetSessionPath(a:sessionName)
     else
         unlet g:bg_sessions_current
