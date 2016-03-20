@@ -19,6 +19,7 @@ function! bg_sessions#SaveSession(sessionName)
     try
         set sessionoptions-=blank sessionoptions-=options sessionoptions+=tabpages
         if strlen(a:sessionName)
+            let g:bg_sessions_current = a:sessionName
             execute "mksession! " . s:GetSessionPath(a:sessionName) 
         endif
         execute "mksession! " . s:GetSessionPath("last")
@@ -29,8 +30,8 @@ endfunction
 
 function! bg_sessions#SaveCurrentSession()
     if !exists("g:SessionLoad") && exists("g:bg_sessions_current")
-        let latest_session_name = g:bg_sessions_current . "_latest"
-        bg_sessions#SaveSession(latest_session_name)
+        let l:latest_session_name = g:bg_sessions_current . "_latest"
+        bg_sessions#SaveSession(l:latest_session_name)
     endif
 endfunction
 
