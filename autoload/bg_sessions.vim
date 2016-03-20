@@ -14,7 +14,7 @@ function! s:GetSessionNames()
     return map(s:GetSessionFiles(), "fnamemodify(v:val, ':t:r')")
 endfunction
 
-function! s:SaveSession(sessionName)
+function! s:SaveSessionImpl(sessionName)
     let sessionoptions = &sessionoptions
     try
         set sessionoptions-=blank sessionoptions-=options sessionoptions+=tabpages
@@ -29,13 +29,13 @@ function! s:SaveSession(sessionName)
 endfunction
 
 function! bg_sessions#SaveSession(sessionName)
-    s:SaveSession(a:sessionName)
+    s:SaveSessionImpl(a:sessionName)
 endfunction
 
 function! bg_sessions#SaveCurrentSession()
     if !exists("g:SessionLoad") && exists("g:bg_sessions_current")
-        let l:latest_session_name = g:bg_sessions_current . "_latest"
-        s:SaveSession(l:latest_session_name)
+        let latest_session_name = g:bg_sessions_current . "_latest"
+        s:SaveSessionImpl(latest_session_name)
     endif
 endfunction
 
