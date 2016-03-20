@@ -35,7 +35,7 @@ endfunction
 function! bg_sessions#SaveCurrentSession()
     if !exists("g:SessionLoad") && exists("g:bg_sessions_current")
         let latest_session_name = g:bg_sessions_current . "_latest"
-        s:SaveSessionImpl(latest_session_name)
+        call s:SaveSessionImpl(latest_session_name)
     endif
 endfunction
 
