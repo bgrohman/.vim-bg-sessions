@@ -32,7 +32,7 @@ endfunction
 function! bg_sessions#SaveCurrentSession()
     if g:bg_sessions_loading
         let g:bg_sessions_loading = 0 
-    else if exists("g:bg_sessions_current")
+    elseif exists("g:bg_sessions_current")
         let latest_session_name = g:bg_sessions_current . "_latest"
         bg_sessions#SaveSession(latest_session_name)
     endif
