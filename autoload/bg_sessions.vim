@@ -2,43 +2,57 @@ if !exists("g:bg_sessions_dir")
     let g:bg_sessions_dir = "~/.vim-sessions"
 endif
 
-fun! s:GetSessionPath(sessionName)
+function! s:GetSessionPath(sessionName)
     return g:bg_sessions_dir . "/" . a:sessionName . ".vim"
 endfunction
 
-fun! bg_sessions#SaveSession(sessionName)
-    if strlen(a:sessionName)
-        execute "mksession! " . s:GetSessionPath(a:sessionName) 
-    endif
-    execute "mksession! " . s:GetSessionPath("last")
+function! s:GetSessionFiles()
+    return split(globpath(g:bg_sessions_dir, '*'), '\n')
 endfunction
 
-fun! bg_sessions#LoadSession(sessionName)
+function! s:GetSessionNames()
+    return map(s:GetSessionFiles(), "fnamemodify(v:val, ':t:r')")
+endfunction
+
+function! bg_sessions#SaveSession(sessionName)
+    let sessionoptions = &sessionoptions
+    try
+        set sessionoptions-=blank sessionoptions-=options sessionoptions+=tabpages
+        if strlen(a:sessionName)
+            execute "mksession! " . s:GetSessionPath(a:sessionName) 
+        endif
+        execute "mksession! " . s:GetSessionPath("last")
+    finally
+        let &sessionoptions = sessionoptions
+endfunction
+
+function! bg_sessions#SaveCurrentSession()
+    if exists("g:bg_sessions_current")
+        let latest_session_name = g:bg_sessions_current . "_latest"
+        bg_sessions#SaveSession(latest_session_name)
+    endif
+endfunction
+
+function! bg_sessions#LoadSession(sessionName)
     if strlen(a:sessionName)
+        let g:bg_sessions_current = a:sessionName
         execute "source " . s:GetSessionPath(a:sessionName)
     else
+        unlet g:bg_sessions_current
         execute "source " . s:GetSessionPath("last")
     endif
 endfunction
 
-fun! s:GetSessionFiles()
-    return split(globpath(g:bg_sessions_dir, '*'), '\n')
-endfunction
-
-fun! s:GetSessionNames()
-    return map(s:GetSessionFiles(), "fnamemodify(v:val, ':t:r')")
-endfunction
-
-fun! bg_sessions#Sessions()
+function! bg_sessions#Sessions()
     echo join(s:GetSessionNames(), "\n")
 endfunction
 
-fun! bg_sessions#SessionComplete(ArgLead, CmdLine, CursorPos)
+function! bg_sessions#SessionComplete(ArgLead, CmdLine, CursorPos)
     let match_filter = 'v:val =~ ".*' . a:ArgLead . '.*"'
     return filter(s:GetSessionNames(), match_filter)
 endfunction
 
-fun! bg_sessions#DeleteSession(sessionName)
+function! bg_sessions#DeleteSession(sessionName)
     let file_path = fnamemodify(s:GetSessionPath(a:sessionName), ":p")
     let rm_cmd = has("win32") || has("win16") ? "!del " : "!rm "
 
