@@ -16,6 +16,19 @@ function! s:GetSessionNames()
     return map(s:GetSessionFiles(), "fnamemodify(v:val, ':t:r')")
 endfunction
 
+function! s:EnableAutoSave()
+    augroup bg_sessions
+        autocmd!
+        autocmd BufEnter * call bg_sessions#SaveCurrentSession()
+    augroup END
+endfunction
+
+function! s:DisableAutoSave()
+    augroup bg_sessions
+        autocmd!
+    augroup END
+endfunction
+
 function! bg_sessions#SaveSession(sessionName)
     let sessionoptions = &sessionoptions
     try
@@ -39,15 +52,20 @@ function! bg_sessions#SaveCurrentSession()
 endfunction
 
 function! bg_sessions#LoadSession(sessionName)
-    if strlen(a:sessionName)
-        let g:bg_sessions_current = a:sessionName
-        let g:bg_sessions_loading = 1
-        execute "source " . s:GetSessionPath(a:sessionName)
-    else
-        unlet g:bg_sessions_current
-        let g:bg_sessions_loading = 0
-        execute "source " . s:GetSessionPath("last")
-    endif
+    s:DisableAutoSave()
+    try
+        if strlen(a:sessionName)
+            let g:bg_sessions_current = a:sessionName
+            let g:bg_sessions_loading = 1
+            execute "source " . s:GetSessionPath(a:sessionName)
+        else
+            unlet g:bg_sessions_current
+            let g:bg_sessions_loading = 0
+            execute "source " . s:GetSessionPath("last")
+        endif
+    finally
+        s:EnableAutoSave()
+    endtry
 endfunction
 
 function! bg_sessions#Sessions()
@@ -71,8 +89,3 @@ function! bg_sessions#DeleteSession(sessionName)
         execute rm_cmd . file_path
     endif
 endfunction
-
-augroup bg_sessions
-    autocmd!
-    autocmd BufEnter * call bg_sessions#SaveCurrentSession()
-augroup END
