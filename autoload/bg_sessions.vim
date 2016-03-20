@@ -24,6 +24,7 @@ function! bg_sessions#SaveSession(sessionName)
         execute "mksession! " . s:GetSessionPath("last")
     finally
         let &sessionoptions = sessionoptions
+    endtry
 endfunction
 
 function! bg_sessions#SaveCurrentSession()
