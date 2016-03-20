@@ -2,8 +2,6 @@ if !exists("g:bg_sessions_dir")
     let g:bg_sessions_dir = "~/.vim-sessions"
 endif
 
-let g:bg_sessions_loading = 0
-
 function! s:GetSessionPath(sessionName)
     return g:bg_sessions_dir . "/" . a:sessionName . ".vim"
 endfunction
@@ -14,19 +12,6 @@ endfunction
 
 function! s:GetSessionNames()
     return map(s:GetSessionFiles(), "fnamemodify(v:val, ':t:r')")
-endfunction
-
-function! s:EnableAutoSave()
-    augroup bg_sessions
-        autocmd!
-        autocmd BufEnter * call bg_sessions#SaveCurrentSession()
-    augroup END
-endfunction
-
-function! s:DisableAutoSave()
-    augroup bg_sessions
-        autocmd!
-    augroup END
 endfunction
 
 function! bg_sessions#SaveSession(sessionName)
@@ -43,29 +28,22 @@ function! bg_sessions#SaveSession(sessionName)
 endfunction
 
 function! bg_sessions#SaveCurrentSession()
-    if g:bg_sessions_loading == 1
-        let g:bg_sessions_loading = 0 
-    elseif exists("g:bg_sessions_current")
+    if !exists("g:SessionLoad") && exists("g:bg_sessions_current")
         let latest_session_name = g:bg_sessions_current . "_latest"
         bg_sessions#SaveSession(latest_session_name)
     endif
 endfunction
 
 function! bg_sessions#LoadSession(sessionName)
-    s:DisableAutoSave()
-    try
-        if strlen(a:sessionName)
-            let g:bg_sessions_current = a:sessionName
-            let g:bg_sessions_loading = 1
-            execute "source " . s:GetSessionPath(a:sessionName)
-        else
-            unlet g:bg_sessions_current
-            let g:bg_sessions_loading = 0
-            execute "source " . s:GetSessionPath("last")
-        endif
-    finally
-        s:EnableAutoSave()
-    endtry
+    if strlen(a:sessionName)
+        let g:bg_sessions_current = a:sessionName
+        let g:bg_sessions_loading = 1
+        execute "source " . s:GetSessionPath(a:sessionName)
+    else
+        unlet g:bg_sessions_current
+        let g:bg_sessions_loading = 0
+        execute "source " . s:GetSessionPath("last")
+    endif
 endfunction
 
 function! bg_sessions#Sessions()

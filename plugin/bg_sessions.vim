@@ -2,5 +2,9 @@ command! -nargs=? -complete=customlist,bg_sessions#SessionComplete SaveSession c
 command! -nargs=? -complete=customlist,bg_sessions#SessionComplete LoadSession call bg_sessions#LoadSession(<q-args>)
 command! -nargs=1 -complete=customlist,bg_sessions#SessionComplete DeleteSession call bg_sessions#DeleteSession(<q-args>)
 command! Sessions call bg_sessions#Sessions()
-autocmd VimLeave * call bg_sessions#SaveSession()
-autocmd VimLeave * call bg_sessions#SaveCurrentSession()
+
+augroup bg_sessions
+    autocmd!
+    autocmd VimLeave * call bg_sessions#SaveSession()
+    autocmd BufEnter,VimLeave * call bg_sessions#SaveCurrentSession()
+augroup END
