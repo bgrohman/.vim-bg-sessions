@@ -14,16 +14,14 @@ function! s:GetSessionNames()
     return map(s:GetSessionFiles(), "fnamemodify(v:val, ':t:r')")
 endfunction
 
-function! s:GetSessionName(sessionName)
-    return substitute(a:sessionName, ".*_latest$", "", "")
-endfunction
-
 function! s:SaveSessionImpl(sessionName)
     let sessionoptions = &sessionoptions
     try
         set sessionoptions-=blank sessionoptions-=options sessionoptions+=tabpages
         if strlen(a:sessionName)
-            let g:bg_sessions_current = s:GetSessionName(a:sessionName)
+            if a:sessionName !~ ".*_latest$"
+                let g:bg_sessions_current = a:sessionName
+            endif
             execute "mksession! " . s:GetSessionPath(a:sessionName) 
         endif
         execute "mksession! " . s:GetSessionPath("last")
@@ -45,7 +43,7 @@ endfunction
 
 function! bg_sessions#LoadSession(sessionName)
     if strlen(a:sessionName)
-        let g:bg_sessions_current = s:GetSessionName(a:sessionName)
+        let g:bg_sessions_current = substitute(a:sessionName, ".*_latest$", "", "")
         let g:bg_sessions_loading = 1
         execute "source " . s:GetSessionPath(a:sessionName)
     else
