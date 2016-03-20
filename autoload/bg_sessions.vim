@@ -56,7 +56,11 @@ function! bg_sessions#Sessions()
 endfunction
 
 function! bg_sessions#CurrentSession()
-    echo g:bg_sessions_current
+    if exists("g:bg_sessions_current")
+        echo g:bg_sessions_current
+    else
+        echo "No current session"
+    endif
 endfunction
 
 function! bg_sessions#SessionComplete(ArgLead, CmdLine, CursorPos)
