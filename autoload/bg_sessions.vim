@@ -35,7 +35,7 @@ function! bg_sessions#SaveSession(sessionName)
 endfunction
 
 function! bg_sessions#SaveCurrentSession()
-    if !exists("g:SessionLoad") && exists("g:bg_sessions_current")
+    if !exists("g:SessionLoad") && exists("g:bg_sessions_current") && strlen("g:bg_sessions_current") > 0
         let latest_session_name = g:bg_sessions_current . "_latest"
         call s:SaveSessionImpl(latest_session_name)
     endif
@@ -43,18 +43,20 @@ endfunction
 
 function! bg_sessions#LoadSession(sessionName)
     if strlen(a:sessionName)
-        let g:bg_sessions_current = substitute(a:sessionName, ".*_latest$", "", "")
-        let g:bg_sessions_loading = 1
         execute "source " . s:GetSessionPath(a:sessionName)
+        let g:bg_sessions_current = substitute(a:sessionName, ".*_latest$", "", "")
     else
         unlet g:bg_sessions_current
-        let g:bg_sessions_loading = 0
         execute "source " . s:GetSessionPath("last")
     endif
 endfunction
 
 function! bg_sessions#Sessions()
     echo join(s:GetSessionNames(), "\n")
+endfunction
+
+function! bg_sessions#CurrentSession()
+    echo g:bg_sessions_current
 endfunction
 
 function! bg_sessions#SessionComplete(ArgLead, CmdLine, CursorPos)
