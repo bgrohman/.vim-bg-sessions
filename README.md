@@ -8,6 +8,8 @@ Vim plugin for saving and loading sessions
 4. Delete sessions by name.
 5. Automatically save your session whenever you quit Vim using a session named "last".
 
+![Screenshot](screenshot.gif)
+
 ## Installation
 Install vim-bg-sessions like you would any other Vim plugin.
 
