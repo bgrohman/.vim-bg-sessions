@@ -79,8 +79,7 @@ endfunction
 
 function! bg_sessions#SessionComplete(ArgLead, CmdLine, CursorPos)
     let match_filter = 'v:val =~ ".*' . a:ArgLead . '.*"'
-    return filter(s:GetSessionNames(), match_filter)
-    return map(matches, "s:GetSessionNameWithTime(v:val)")
+    return filter(s:GetSessionNamesWithTimes(), match_filter)
 endfunction
 
 function! bg_sessions#DeleteSession(sessionName)
