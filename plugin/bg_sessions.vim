@@ -6,6 +6,6 @@ command! CurrentSession call bg_sessions#CurrentSession()
 
 augroup bg_sessions
     autocmd!
-    autocmd BufEnter,VimLeave * call bg_sessions#SaveSession()
+    autocmd BufEnter,VimLeave * call bg_sessions#SaveSession("last")
     autocmd BufEnter,VimLeave * call bg_sessions#SaveCurrentSession()
 augroup END
