@@ -18,6 +18,16 @@ function! s:GetSessionNames()
     return map(s:GetSessionFiles(), "fnamemodify(v:val, ':t:r')")
 endfunction
 
+function! s:GetSessionNameWithTime(sessionName)
+    let path = expand(s:GetSessionPath(a:sessionName), ":p")
+    let time = getftime(path)
+    return a:sessionName . " (" . strftime("%F %r", time) . ")"
+endfunction
+
+function! s:GetSessionNamesWithTimes()
+    return map(s:GetSessionNames(), "s:GetSessionNameWithTime(v:val)")
+endfunction
+
 function! s:SaveSessionImpl(sessionName)
     let sessionoptions = &sessionoptions
     try
@@ -56,7 +66,7 @@ function! bg_sessions#LoadSession(sessionName)
 endfunction
 
 function! bg_sessions#Sessions()
-    echo join(s:GetSessionNames(), "\n")
+    echo join(s:GetSessionNamesWithTimes(), "\n")
 endfunction
 
 function! bg_sessions#CurrentSession()
