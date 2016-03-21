@@ -47,10 +47,17 @@ __Example:__ _Load a session named "myFirstSession"_
 __Example:__ _Load your last session from the last time you closed Vim_
 ```
 :LoadSession
-```
+
 or
-```
+
 :LoadSession last
+```
+
+__Example:__ _Load the "latest" version of a session named "myFirstSession"_
+
+You've saved a session named "myProject" for a particular project, and you want to be able to always return to that session, so you don't re-save it after continuing your work (e.g. opening additional buffers/windows/tabs). But you also want to be able to return to your last state after you loaded that session, including all of the changes since the "myProject" session was loaded. This plugin will automatically save a session named "myProject_latest" any time you enter a new buffer.
+```
+:LoadSession myFirstSession_latest
 ```
 
 #### DeleteSession session_name
