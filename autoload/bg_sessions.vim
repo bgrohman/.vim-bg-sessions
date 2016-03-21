@@ -48,9 +48,13 @@ function! bg_sessions#SaveSession(sessionName)
     call s:SaveSessionImpl(a:sessionName)
 endfunction
 
+let s:should_save_last_session = 0
 function! bg_sessions#SaveLastSession()
-    if exists("g:bg_sessions_dir")
+    " Don't save on the initial call since that's when Vim has just started
+    if s:should_save_last_session 
         call s:SaveSessionImpl("")
+    else
+        let s:should_save_last_session = 1
     endif
 endfunction
 
@@ -101,14 +105,4 @@ function! bg_sessions#DeleteSession(sessionName)
     if strlen(a:sessionName)
         execute rm_cmd . file_path
     endif
-endfunction
-
-function! bg_sessions#SetupSaveLastSession()
-    augroup bg_sessions_init
-        autocmd!
-    augroup END
-
-    augroup bg_sessions
-        autocmd BufEnter,VimLeave * call bg_sessions#SaveLastSession()
-    augroup END
 endfunction

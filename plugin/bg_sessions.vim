@@ -4,12 +4,8 @@ command! -nargs=1 -complete=customlist,bg_sessions#SessionComplete DeleteSession
 command! Sessions call bg_sessions#Sessions()
 command! CurrentSession call bg_sessions#CurrentSession()
 
-augroup bg_sessions_init
-    autocmd!
-    autocmd BufEnter * call bg_sessions#SetupSaveLastSession()
-augroup END
-
 augroup bg_sessions
     autocmd!
+    autocmd BufEnter,VimLeave * call bg_sessions#SaveLastSession()
     autocmd BufEnter,VimLeave * call bg_sessions#SaveCurrentSession()
 augroup END
