@@ -6,7 +6,7 @@ Vim plugin for saving and loading sessions
 2. Tab autocompletion of session names when saving or loading sessions.
 3. Automatically save the "latest" version of a named session while keeping the original session intact.
 4. Delete sessions by name.
-5. Automatically save the "last" session whenever you quit Vim.
+5. Automatically save your session whenever you quit Vim using a session named "last".
 
 ## Installation
 Install vim-bg-sessions like you would any other Vim plugin.
