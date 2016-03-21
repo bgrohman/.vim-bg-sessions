@@ -60,7 +60,9 @@ function! bg_sessions#LoadSession(sessionName)
         execute "source " . s:GetSessionPath(a:sessionName)
         let g:bg_sessions_current = substitute(a:sessionName, "_latest$", "", "")
     else
-        unlet g:bg_sessions_current
+        if exists("g:bg_sessions_current")
+            unlet g:bg_sessions_current
+        endif
         execute "source " . s:GetSessionPath("last")
     endif
 endfunction
