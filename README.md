@@ -21,10 +21,10 @@ git clone https://github.com/bgrohman/vim-bg-sessions.git
 
 ### Commands
 
-#### Sessions
+#### :Sessions
 Lists all saved sessions.
 
-#### SaveSession [session_name]
+#### :SaveSession [session_name]
 Saves your current sessions. If `session_name` is provided, a session will be saved with that name. Otherwise, the session will be saved with the name of "last".
 
 When saving a named session, the "last" session is also updated.
@@ -36,7 +36,7 @@ __Example:__ _Save a session named "myFirstSession"_
 :SaveSession myFirstSession
 ```
 
-#### LoadSession [session_name]
+#### :LoadSession [session_name]
 Loads a session. If `session_name` is provided, the session by that name will be loaded. Otherwise, the session named "last" will be loaded. Use `tab` for session name autocompletion.
 
 __Example:__ _Load a session named "myFirstSession"_
@@ -60,7 +60,7 @@ You've saved a session named "myProject" for a particular project, and you want 
 :LoadSession myFirstSession_latest
 ```
 
-#### DeleteSession session_name
+#### :DeleteSession session_name
 Deletes the session named `session_name`. Use `tab` for session name autocompletion.
 
 __Example:__ _Delete a session named "myFirstSession"_
