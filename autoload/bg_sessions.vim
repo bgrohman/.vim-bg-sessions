@@ -21,7 +21,7 @@ endfunction
 function! s:GetSessionNameWithTime(sessionName)
     let path = expand(a:sessionName, ":p")
     let time = getftime(path)
-    return a:sessionName . " " . strftime("%b %d %X", time)
+    return a:sessionName . " (" . strftime("%F", time) . ")"
 endfunction
 
 function! s:GetSessionNamesWithTimes()
