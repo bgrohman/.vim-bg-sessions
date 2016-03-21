@@ -102,3 +102,9 @@ function! bg_sessions#DeleteSession(sessionName)
         execute rm_cmd . file_path
     endif
 endfunction
+
+function! bg_sessions#SetupAutoSaveLast()
+    augroup bg_sessions
+        autocmd BufEnter,VimLeave * call bg_sessions#SaveLastSession()
+    augroup END
+endfunction
