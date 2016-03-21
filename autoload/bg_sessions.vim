@@ -2,6 +2,10 @@ if !exists("g:bg_sessions_dir")
     let g:bg_sessions_dir = "~/.vim-sessions"
 endif
 
+if !isdirectory(g:bg_sessions_dir)
+    call mkdir(g:bg_sessions_dir)
+endif
+
 function! s:GetSessionPath(sessionName)
     return g:bg_sessions_dir . "/" . a:sessionName . ".vim"
 endfunction
