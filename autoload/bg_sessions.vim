@@ -49,7 +49,9 @@ function! bg_sessions#SaveSession(sessionName)
 endfunction
 
 function! bg_sessions#SaveLastSession()
-    call s:SaveSessionImpl("")
+    if exists("g:bg_sessions_dir")
+        call s:SaveSessionImpl("")
+    endif
 endfunction
 
 function! bg_sessions#SaveCurrentSession()
