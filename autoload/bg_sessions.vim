@@ -48,6 +48,10 @@ function! bg_sessions#SaveSession(sessionName)
     call s:SaveSessionImpl(a:sessionName)
 endfunction
 
+function! bg_sessions#SaveLastSession()
+    call s:SaveSessionImpl()
+endfunction
+
 function! bg_sessions#SaveCurrentSession()
     if !exists("g:SessionLoad") && exists("g:bg_sessions_current") && strlen("g:bg_sessions_current") > 0
         let latest_session_name = g:bg_sessions_current . "_latest"
