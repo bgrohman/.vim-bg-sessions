@@ -18,6 +18,16 @@ function! s:GetSessionNames()
     return map(s:GetSessionFiles(), "fnamemodify(v:val, ':t:r')")
 endfunction
 
+function! s:GetSessionNameWithTime(sessionName)
+    let path = expand(a:sessionName, ":p")
+    let time = getftime(path)
+    return a:sessionName . " " . strftime("%b %d %X", time)
+endfunction
+
+function! s:GetSessionNamesWithTimes()
+    return map(s:GetSessionNames(), "s:GetSessionNameWithTime(v:val)")
+endfunction
+
 function! s:SaveSessionImpl(sessionName)
     let sessionoptions = &sessionoptions
     try
@@ -56,7 +66,7 @@ function! bg_sessions#LoadSession(sessionName)
 endfunction
 
 function! bg_sessions#Sessions()
-    echo join(s:GetSessionNames(), "\n")
+    echo join(s:GetSessionNamesWithTimes(), "\n")
 endfunction
 
 function! bg_sessions#CurrentSession()
@@ -67,16 +77,10 @@ function! bg_sessions#CurrentSession()
     endif
 endfunction
 
-function! s:GetSessionNameWithTime(sessionName)
-    let path = expand(a:sessionName, ":p")
-    let time = getftime(path)
-    return a:sessionName . " " . strftime("%b %d %X", time)
-endfunction
-
 function! bg_sessions#SessionComplete(ArgLead, CmdLine, CursorPos)
     let match_filter = 'v:val =~ ".*' . a:ArgLead . '.*"'
-    let matches = filter(s:GetSessionNames(), match_filter)
-    return map(matches, "call s:GetSessionNameWithTime(v:val)")
+    return filter(s:GetSessionNames(), match_filter)
+    return map(matches, "s:GetSessionNameWithTime(v:val)")
 endfunction
 
 function! bg_sessions#DeleteSession(sessionName)
