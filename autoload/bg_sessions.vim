@@ -67,9 +67,16 @@ function! bg_sessions#CurrentSession()
     endif
 endfunction
 
+function! s:GetSessionNameWithTime(sessionName)
+    let path = expand(a:sessionName, ":p")
+    let time = getftime(path)
+    return a:sessionName . " " . strftime("%b %d %X", time)
+endfunction
+
 function! bg_sessions#SessionComplete(ArgLead, CmdLine, CursorPos)
     let match_filter = 'v:val =~ ".*' . a:ArgLead . '.*"'
-    return filter(s:GetSessionNames(), match_filter)
+    let matches = filter(s:GetSessionNames(), match_filter)
+    return map(matches, "call s:GetSessionNameWithTime(v:val)")
 endfunction
 
 function! bg_sessions#DeleteSession(sessionName)
