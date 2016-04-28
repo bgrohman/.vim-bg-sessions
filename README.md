@@ -1,6 +1,8 @@
 # vim-bg-sessions
 Vim plugin for saving and loading sessions
 
+[![Issue Count](https://codeclimate.com/github/bgrohman/vim-bg-sessions/badges/issue_count.svg)](https://codeclimate.com/github/bgrohman/vim-bg-sessions)
+
 ## Features
 1. Save and load sessions by name.
 2. Tab autocompletion of session names when saving or loading sessions.
